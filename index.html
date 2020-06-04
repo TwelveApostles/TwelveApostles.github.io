@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <style>
+         #map {
+          height: 700px;
+          width: 100%;
+         }
+      </style>
+    </head>
+
+    <body>
+      <div class="container">
+        <h1 class="center-align thin">Whatever Happened to the Twelve Apostles?</h1>
+        <!-- <center>
+        <div class="row">
+          <div class="col s6">
+            <a onclick="prelocation()" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">skip_previous</i></a>
+          </div>
+          <div class="col s6">
+            <a onclick="nxtlocation()" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">skip_next</i></a>
+          </div>
+        </div>
+        <center> -->
+        <div id="map"></div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+      <script>
+      var datapoints = [
+          {coordinates:{lat: 31.783333, lng: 35.216667}, title: 'Jerusalem', description: 'Jesus Christ was crucified in this place.'},
+          {coordinates:{lat: 31.780229, lng: 35.190463}, title: 'James the son of Zebedee', description: 'executed by Herod about 44 AD (Acts 12:2)'},
+          {coordinates:{lat: 41.897210, lng: 12.496850}, title: 'Peter', description: 'martyred in Rome about 66 AD, during the persecution under Emperor Nero. Peter was crucified, upside down at his request, since he did not feel he was worthy to die in the same manner as his Lord.'},
+          {coordinates:{lat: 62.108174, lng: 92.124379}, title: 'Andrew', description: 'Christians there claim him as the first to bring the gospel to their land. He also preached in Asia Minor, modern-day Turkey, and in Greece, where he is said to have been crucified.'},
+          {coordinates:{lat: 39.073851, lng: 22.340801}, title: 'Andrew', description: 'Christians there claim him as the first to bring the gospel to their land. He also preached in Asia Minor, modern-day Turkey, and in Greece, where he is said to have been crucified.'},
+          {coordinates:{lat: 34.938545, lng: 38.527526}, title: 'Thomas', description: 'was probably most active in the area east of Syria. Tradition has him preaching as far east as India, where the ancient Marthoma Christians revere him as their founder. They claim that he died there when pierced through with the spears of four soldiers.'},
+          {coordinates:{lat: 22.386900, lng: 78.847906}, title: 'Thomas', description: 'was probably most active in the area east of Syria. Tradition has him preaching as far east as India, where the ancient Marthoma Christians revere him as their founder. They claim that he died there when pierced through with the spears of four soldiers.'},
+          {coordinates:{lat: 36.872480, lng: 10.315557}, title: 'Philip', description: 'possibly had a powerful ministry in Carthage in North Africa and then in Asia Minor, where he converted the wife of a Roman proconsul. In retaliation the proconsul had Philip arrested and cruelly put to death.'},
+          {coordinates:{lat: 32.159962, lng: 54.074407}, title: 'Matthew', description: 'the tax collector and writer of a Gospel ministered in Persia and Ethiopia. Some of the oldest reports say he was not martyred, while others say he was stabbed to death in Ethiopia.'},
+          {coordinates:{lat: 8.491767, lng: 39.603880}, title: 'Matthew', description: 'the tax collector and writer of a Gospel ministered in Persia and Ethiopia. Some of the oldest reports say he was not martyred, while others say he was stabbed to death in Ethiopia.'},
+          {coordinates:{lat: 21.571883, lng: 77.002203}, title: 'Bartholomew', description: 'had widespread missionary travels attributed to him by tradition: to India with Thomas, back to Armenia, and also to Ethiopia and Southern Arabia. There are various accounts of how he met his death as a martyr for the gospel.'},
+          {coordinates:{lat: 40.446702, lng: 44.655643}, title: 'Bartholomew', description: 'had widespread missionary travels attributed to him by tradition: to India with Thomas, back to Armenia, and also to Ethiopia and Southern Arabia. There are various accounts of how he met his death as a martyr for the gospel.'},
+          {coordinates:{lat: 8.143903, lng: 41.976927}, title: 'Bartholomew', description: 'had widespread missionary travels attributed to him by tradition: to India with Thomas, back to Armenia, and also to Ethiopia and Southern Arabia. There are various accounts of how he met his death as a martyr for the gospel.'},
+          {coordinates:{lat: 20.293080, lng: 49.389613}, title: 'Bartholomew', description: 'had widespread missionary travels attributed to him by tradition: to India with Thomas, back to Armenia, and also to Ethiopia and Southern Arabia. There are various accounts of how he met his death as a martyr for the gospel.'},
+          {coordinates:{lat: 34.758222, lng: 37.868347}, title: 'James', description: 'the son of Alpheus is one of at least three James referred to in the New Testament. There is some confusion as to which is which, but this James is reckoned to have ministered in Syria. The Jewish historian Josephus reported that he was stoned and then clubbed to death.'},
+          {coordinates:{lat: 32.085527, lng: 56.183782}, title: 'Simon the Zealot', description: 'so the story goes, ministered in Persia and was killed after refusing to sacrifice to the sun god.'},
+          {coordinates:{lat: 30.508486, lng: 54.250188}, title: 'Matthais', description: 'The apostle chosen to replace Judas. Tradition sends him to Syria with Andrew and to death by burning.'},
+          {coordinates:{lat: 37.949117, lng: 27.367516}, title: 'John', description: 'The only one of the apostles generally thought to have died a natural death from old age. He was the leader of the church in the Ephesus area and is said to have taken care of Mary the mother of Jesus in his home. During Domitians persecution in the middle 90s, he was exiled to the island of Patmos. There he is credited with writing the last book of the New Testament--the Revelation. An early Latin tradition has him escaping unhurt after being cast into boiling oil at Rome.'},
+          {coordinates:{lat: 37.325, lng: 26.541667}, title: 'John', description: 'The only one of the apostles generally thought to have died a natural death from old age. He was the leader of the church in the Ephesus area and is said to have taken care of Mary the mother of Jesus in his home. During Domitians persecution in the middle 90s, he was exiled to the island of Patmos. There he is credited with writing the last book of the New Testament--the Revelation. An early Latin tradition has him escaping unhurt after being cast into boiling oil at Rome.'}
+      ];
+      var pointer = 0;
+      var map;
+      var marker=[];
+      var contentString = [];
+      var infowindow =[];
+      var lineSymbol = {
+        path: 'M 0,-1 0,1',
+        strokeOpacity: 1,
+        scale: 4
+      };
+      var line = [];
+      function initMap() {
+        var uluru = datapoints[0].coordinates;
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 3,
+          center: uluru
+        });
+        $.each(datapoints, function(index,value){
+          if(index==0){
+            marker[index] = new google.maps.Marker({
+              position: datapoints[index].coordinates,
+              map: map,
+              title: datapoints[index].title,
+              // label: (index+1).toString()
+            });
+          }
+          else{
+            marker[index] = new google.maps.Marker({
+              position: datapoints[index].coordinates,
+              map: map,
+              title: datapoints[index].title,
+              // label: (index+1).toString()
+              icon: {
+                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+              }
+            });
+          }
+          var contentString = '<div id="content">'+
+          '<div id="siteNotice">'+
+          '</div>'+
+          '<h4 id="firstHeading" class="firstHeading">'+datapoints[index].title+'</h4>'+
+          '<div id="bodyContent">'+
+          '<p>'+datapoints[index].description+'</p>'+
+          '</div>'+
+          '</div>';
+          infowindow[index] = new google.maps.InfoWindow({
+            content: contentString
+          });
+          marker[index].addListener('click', function() {
+            infowindow[index].open(map, marker[index]);
+          });
+          // if(index<datapoints.length-1)
+          // {
+          //   line[index] = new google.maps.Polyline({
+          //     path: [datapoints[index].coordinates, datapoints[index+1].coordinates],
+          //     strokeOpacity: 0,
+          //     icons: [{
+          //       icon: lineSymbol,
+          //       offset: '0',
+          //       repeat: '20px'
+          //     }],
+          //     map: map
+          //   });
+          // }
+        });
+      }
+      function nxtlocation() {
+        if(pointer<datapoints.length-1)
+        {
+          pointer = pointer + 1;
+          var nearaust = datapoints[pointer].coordinates;
+          map.panTo(nearaust);
+        }
+        else
+        {
+          pointer = 0;
+          var nearaust = datapoints[pointer].coordinates;
+          map.panTo(nearaust);
+        }
+        /*
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: nearaust
+        });
+        */
+
+      }
+      function prelocation() {
+        if(pointer>0)
+        {
+          pointer = pointer - 1;
+          var nearaust = datapoints[pointer].coordinates;
+          map.panTo(nearaust);
+        }
+        else
+        {
+          pointer = datapoints.length-1;
+          var nearaust = datapoints[pointer].coordinates;
+          map.panTo(nearaust);
+        }
+        /*
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: nearaust
+        });
+        */
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAQfsppvISgx3wCcM05dDoblHCWHPPCdt4&callback=initMap">
+    </script>
+    </body>
+  </html>
